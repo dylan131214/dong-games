@@ -1,0 +1,109 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', 'Nanum Gothic', sans-serif;
+  overflow: hidden;
+}
+
+/* ── 메뉴 화면 ── */
+#menu-screen {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(180deg, #0a2a6e 0%, #1565c0 40%, #0288d1 70%, #00acc1 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+#menu-screen h1 {
+  color: #e0f7fa;
+  font-size: 3rem;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  letter-spacing: 4px;
+}
+
+#menu-screen .subtitle {
+  color: #b3e5fc;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
+#login-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255,255,255,0.1);
+  padding: 32px 40px;
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+#login-box label {
+  color: #e0f7fa;
+  font-size: 1rem;
+}
+
+#nickname-input {
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  outline: none;
+  width: 220px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+#nickname-input::placeholder {
+  color: rgba(255,255,255,0.5);
+}
+
+#nickname-input:focus {
+  border-color: #80deea;
+}
+
+#start-btn {
+  padding: 14px 48px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #00bcd4, #0288d1);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  transition: transform 0.1s, box-shadow 0.1s;
+  letter-spacing: 2px;
+}
+
+#start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+#start-btn:active {
+  transform: translateY(0);
+}
+
+/* ── 게임 화면 ── */
+#game-screen {
+  width: 100vw;
+  height: 100vh;
+  display: none;
+}
+
+#game-canvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}

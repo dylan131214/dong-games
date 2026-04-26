@@ -1,0 +1,13 @@
+{
+  "name": "dong-fishing",
+  "version": "1.0.0",
+  "description": "2D 사이드뷰 해양 생존 낚시 게임",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.16.0"
+  }
+}

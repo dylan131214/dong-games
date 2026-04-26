@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>바다 낚시 - 멸치 사냥꾼</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="menu-screen">
+    <h1>🎣 바다 낚시</h1>
+    <p class="subtitle">멸치 사냥꾼</p>
+    <div id="login-box">
+      <label for="nickname-input">닉네임을 입력하세요</label>
+      <input
+        type="text"
+        id="nickname-input"
+        placeholder="바다왕"
+        maxlength="12"
+        autocomplete="off"
+      />
+      <button id="start-btn">시작하기</button>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById('nickname-input');
+    const btn = document.getElementById('start-btn');
+
+    btn.addEventListener('click', startGame);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') startGame(); });
+
+    async function startGame() {
+      const nickname = input.value.trim();
+      if (!nickname) {
+        alert('닉네임을 입력해 주세요!');
+        input.focus();
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = '접속 중...';
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nickname })
+        });
+        if (!res.ok) throw new Error('서버 오류');
+        const player = await res.json();
+        localStorage.setItem('nickname', player.nickname);
+        window.location.href = 'game.html';
+      } catch (e) {
+        alert('서버에 연결할 수 없습니다. 서버가 실행 중인지 확인하세요.');
+        btn.disabled = false;
+        btn.textContent = '시작하기';
+      }
+    }
+  </script>
+</body>
+</html>

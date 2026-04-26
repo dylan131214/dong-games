@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node *)",
+      "Bash(grep -v \"^[0-9]*:function\\\\|^[0-9]*://\\\\|^[0-9]*:  //\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(grep -n \"drawBoss\\\\|} else {$\" D:/mini-game/dong-rpg2/dong-rpg.html)",
+      "Bash(git push *)",
+      "Bash(python -c \"import http.server, threading; server = http.server.HTTPServer\\(\\('', 8765\\), http.server.SimpleHTTPRequestHandler\\); t = threading.Thread\\(target=server.serve_forever\\); t.daemon=True; t.start\\(\\); print\\('서버 시작 http://localhost:8765'\\)\")",
+      "Bash(python -m http.server 8765)",
+      "Bash(grep -Ev \"BGM|//|drawUnderwaterBubble|drawDragonNest|drawDesert|drawArena|drawPlayer|stingray|heatwave|background|swEmerge|sandworm|swordfish\")"
+    ]
+  }
+}

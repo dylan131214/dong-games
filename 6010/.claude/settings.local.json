@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(node -e \"const e=require\\('express'\\);const f=require\\('fs'\\);const p=require\\('path'\\);console.log\\('Express OK, fs OK, path OK'\\);\")",
+      "Bash(node --check server.js)",
+      "Bash(node --check public/game.js)",
+      "Bash(node server.js)",
+      "Bash(curl -s -X POST http://localhost:3000/api/login -H \"Content-Type: application/json\" -d '{\"nickname\":\"테스트왕\"}')",
+      "Bash(python -m json.tool)",
+      "Bash(curl *)",
+      "Bash(pkill -f \"node server.js\")",
+      "Bash(node *)"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node *)",
+      "Bash(grep -v \"^[0-9]*:function\\\\|^[0-9]*://\\\\|^[0-9]*:  //\")",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(git branch *)",
+      "Bash(git pull *)",
+      "Bash(git stash *)",
+      "Bash(git checkout *)",
+      "Bash(git rm *)",
+      "Bash(rm -rf \"D:/mini-game/dong-rpg/.git\")",
+      "Bash(rm -rf \"D:/mini-game/dong-rpg2/.git\")"
+    ]
+  }
+}
