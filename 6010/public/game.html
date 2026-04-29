@@ -12,6 +12,15 @@
 </head>
 <body>
   <canvas id="game-canvas"></canvas>
+  <input id="log-search" type="text" autocomplete="off" placeholder="물고기 검색..."
+    style="position:fixed;display:none;background:rgba(5,18,48,0.97);color:#e0f7fa;
+           border:1.5px solid #4fc3f7;border-radius:5px;padding:5px 10px;
+           font-size:13px;outline:none;z-index:20;">
+  <input id="cmd-input" type="text" autocomplete="off" placeholder="명령어 입력 (Enter 확인 / Esc 취소)"
+    style="position:fixed;display:none;left:50%;transform:translateX(-50%);
+           bottom:36px;width:340px;background:rgba(0,0,0,0.88);color:#fff;
+           border:1.5px solid #4fc3f7;border-radius:7px;padding:9px 14px;
+           font-size:14px;outline:none;z-index:20;">
   <script src="game.js"></script>
 </body>
 </html>

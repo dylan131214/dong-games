@@ -10,7 +10,10 @@
       "Bash(python -m json.tool)",
       "Bash(curl *)",
       "Bash(pkill -f \"node server.js\")",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(findstr 6010)",
+      "Bash(tasklist)",
+      "PowerShell(Get-Process *)"
     ]
   }
 }

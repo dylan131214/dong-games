@@ -6,7 +6,6 @@ const app = express();
 const PORT = 6010;
 const PLAYERS_DIR = path.join(__dirname, 'data', 'players');
 
-// data/players 디렉토리 자동 생성
 if (!fs.existsSync(PLAYERS_DIR)) {
   fs.mkdirSync(PLAYERS_DIR, { recursive: true });
 }
@@ -14,70 +13,82 @@ if (!fs.existsSync(PLAYERS_DIR)) {
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-function playerFilePath(nickname) {
-  return path.join(PLAYERS_DIR, `${nickname}.json`);
-}
+function playerFilePath(nickname) { return path.join(PLAYERS_DIR, `${nickname}.json`); }
 
 function loadPlayer(nickname) {
-  const filePath = playerFilePath(nickname);
-  if (fs.existsSync(filePath)) {
-    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  }
+  const fp = playerFilePath(nickname);
+  if (fs.existsSync(fp)) return JSON.parse(fs.readFileSync(fp, 'utf8'));
   return null;
 }
 
 function savePlayer(data) {
-  const filePath = playerFilePath(data.nickname);
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+  fs.writeFileSync(playerFilePath(data.nickname), JSON.stringify(data, null, 2), 'utf8');
 }
 
-// POST /api/login
 app.post('/api/login', (req, res) => {
   const { nickname } = req.body;
-  if (!nickname || typeof nickname !== 'string' || !nickname.trim()) {
+  if (!nickname || typeof nickname !== 'string' || !nickname.trim())
     return res.status(400).json({ error: '닉네임이 없습니다.' });
-  }
   const trimmed = nickname.trim();
   let player = loadPlayer(trimmed);
   if (!player) {
-    player = { nickname: trimmed, coins: 0, inventory: { anchovy: 0 } };
+    player = { nickname: trimmed, coins: 0, inventory: {
+      anchovy: 0, clownfish: 0, salmon: 0, barracuda: 0,
+      tropicalfish: 0, turtle: 0, butterflyfish: 0, octopus: 0, moray: 0
+    }, fishLog: {
+      anchovy: 0, clownfish: 0, salmon: 0, barracuda: 0,
+      tropicalfish: 0, turtle: 0, butterflyfish: 0, octopus: 0, moray: 0
+    }};
     savePlayer(player);
   }
   res.json(player);
 });
 
-// POST /api/save
 app.post('/api/save', (req, res) => {
-  const { nickname, coins, inventory } = req.body;
+  const { nickname, inventory } = req.body;
   if (!nickname) return res.status(400).json({ error: '닉네임 없음' });
-  const player = { nickname, coins, inventory };
+  const player = loadPlayer(nickname) || { nickname, coins: 0, inventory: {} };
+  if (inventory !== undefined) player.inventory = inventory;
+  if (req.body.fishLog !== undefined) player.fishLog = req.body.fishLog;
+  if (req.body.upgrades !== undefined) player.upgrades = req.body.upgrades;
+  if (req.body.coins !== undefined) player.coins = req.body.coins;
   savePlayer(player);
   res.json({ ok: true });
 });
 
-// POST /api/sell
-app.post('/api/sell', (req, res) => {
-  const { nickname, anchovyAmount = 0, clownfishAmount = 0 } = req.body;
-  const coinsToAdd = anchovyAmount + clownfishAmount * 2;
-  if (!nickname || !Number.isInteger(anchovyAmount) || !Number.isInteger(clownfishAmount) ||
-      anchovyAmount < 0 || clownfishAmount < 0 ||
-      anchovyAmount + clownfishAmount < 1 || anchovyAmount + clownfishAmount > 10) {
-    return res.status(400).json({ error: '잘못된 요청' });
-  }
-  const deliverySeconds = 60;
-  res.json({ ok: true, deliverySeconds });
+const COIN_VALUES = {
+  anchovy: 1, clownfish: 2, salmon: 5, barracuda: 10,
+  tropicalfish: 3, turtle: 24, butterflyfish: 5, octopus: 20, moray: 15,
+};
 
-  // 1분 후 코인 지급 (멸치 1코인, 흰동가리 2코인)
-  setTimeout(() => {
-    const player = loadPlayer(nickname);
-    if (player) {
-      player.coins = (player.coins || 0) + coinsToAdd;
-      savePlayer(player);
-    }
-  }, deliverySeconds * 1000);
+app.post('/api/sell', (req, res) => {
+  const body = req.body;
+  if (!body.nickname) return res.status(400).json({ error: '잘못된 요청' });
+
+  const amounts = {};
+  let totalItems = 0;
+  let coinsToAdd = 0;
+
+  for (const [fish, coinVal] of Object.entries(COIN_VALUES)) {
+    const amt = body[fish + 'Amount'] || 0;
+    if (!Number.isInteger(amt) || amt < 0)
+      return res.status(400).json({ error: '잘못된 요청' });
+    amounts[fish] = amt;
+    totalItems += amt;
+    coinsToAdd += amt * coinVal;
+  }
+
+  if (totalItems < 1 || totalItems > 10)
+    return res.status(400).json({ error: '잘못된 요청' });
+
+  const player = loadPlayer(body.nickname);
+  if (!player) return res.status(404).json({ error: '플레이어 없음' });
+  player.coins = (player.coins || 0) + coinsToAdd;
+  savePlayer(player);
+
+  res.json({ ok: true, deliverySeconds: 60, newCoins: player.coins });
 });
 
-// GET /api/player/:nickname (60초 후 코인 확인용)
 app.get('/api/player/:nickname', (req, res) => {
   const player = loadPlayer(req.params.nickname);
   if (!player) return res.status(404).json({ error: '플레이어 없음' });
