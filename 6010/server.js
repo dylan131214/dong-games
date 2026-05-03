@@ -34,10 +34,17 @@ app.post('/api/login', (req, res) => {
   if (!player) {
     player = { nickname: trimmed, coins: 0, inventory: {
       anchovy: 0, clownfish: 0, salmon: 0, barracuda: 0,
-      tropicalfish: 0, turtle: 0, butterflyfish: 0, octopus: 0, moray: 0
+      tropicalfish: 0, turtle: 0, butterflyfish: 0, octopus: 0, moray: 0,
+      tuna: 0, shark: 0, whale: 0,
+      seaweed: 0, anemone: 0, jellyfish: 0, stone: 0, iron: 0, gold: 0, aluminum: 0,
+      sunfish: 0, holefish: 0, plesio: 0,
+      ballooneel: 0, toothfish: 0
     }, fishLog: {
       anchovy: 0, clownfish: 0, salmon: 0, barracuda: 0,
-      tropicalfish: 0, turtle: 0, butterflyfish: 0, octopus: 0, moray: 0
+      tropicalfish: 0, turtle: 0, butterflyfish: 0, octopus: 0, moray: 0,
+      tuna: 0, shark: 0, whale: 0,
+      sunfish: 0, holefish: 0, plesio: 0,
+      ballooneel: 0, toothfish: 0
     }};
     savePlayer(player);
   }
@@ -45,13 +52,11 @@ app.post('/api/login', (req, res) => {
 });
 
 app.post('/api/save', (req, res) => {
-  const { nickname, inventory } = req.body;
+  const { nickname } = req.body;
   if (!nickname) return res.status(400).json({ error: '닉네임 없음' });
   const player = loadPlayer(nickname) || { nickname, coins: 0, inventory: {} };
-  if (inventory !== undefined) player.inventory = inventory;
-  if (req.body.fishLog !== undefined) player.fishLog = req.body.fishLog;
-  if (req.body.upgrades !== undefined) player.upgrades = req.body.upgrades;
-  if (req.body.coins !== undefined) player.coins = req.body.coins;
+  const { nickname: _n, ...fields } = req.body;
+  Object.assign(player, fields);
   savePlayer(player);
   res.json({ ok: true });
 });
@@ -59,6 +64,10 @@ app.post('/api/save', (req, res) => {
 const COIN_VALUES = {
   anchovy: 1, clownfish: 2, salmon: 5, barracuda: 10,
   tropicalfish: 3, turtle: 24, butterflyfish: 5, octopus: 20, moray: 15,
+  tuna: 32, shark: 80, whale: 300,
+  seaweed: 1, anemone: 2, jellyfish: 3, stone: 1, iron: 3, gold: 10, aluminum: 5,
+  sunfish: 32, holefish: 70, plesio: 600,
+  ballooneel: 30, toothfish: 450,
 };
 
 app.post('/api/sell', (req, res) => {

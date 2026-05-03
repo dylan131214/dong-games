@@ -13,7 +13,12 @@
       "Bash(node *)",
       "Bash(findstr 6010)",
       "Bash(tasklist)",
-      "PowerShell(Get-Process *)"
+      "PowerShell(Get-Process *)",
+      "Bash(kill %1)",
+      "Bash(Get-Content \"D:\\\\dong-games\\\\6010\\\\public\\\\game.js\")",
+      "Bash(Measure-Object -Line)",
+      "PowerShell(Get-Content *)",
+      "Bash(powershell *)"
     ]
   }
 }
